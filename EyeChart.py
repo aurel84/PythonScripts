@@ -3,11 +3,6 @@ import random
 import string
 
 
-def refresh():
-    root.update()
-    root.update_idletasks()
-
-
 root = Tk()
 root.geometry('660x1100')
 root.title('Eye Exam')
@@ -36,6 +31,7 @@ class char:
     
     def do_rand_letter(char):
         global create_letter
+
         if char == 'Upper':
             create_letter = random.choice(string.ascii_uppercase)
         elif char == 'Lower':
@@ -135,10 +131,7 @@ class interface:
         red_line.grid(column=2, row=9)
 
     def do_chart_grid():
-        global chart_grid
-        global letter_size
-        global char_row_num
-        global sub_row
+        global chart_grid, letter_size, char_row_num, sub_row
         
         gen_row = char.do_char_list()
 
@@ -169,6 +162,40 @@ class interface:
         return chart_grid, sub_row, letter_size, gen_row, char_row_num
 
 
+def refresh():
+    global root, letter_size, char_row_num, sub_row, choices
+
+    root.destroy()
+    root = Tk()
+    root.geometry('660x1100')
+    root.title('Eye Exam')
+    menubar = Menu(root)
+    choices = Menubutton(menubar)
+    root.configure(background='White', menu=menubar)
+
+    root.columnconfigure(index=0)
+    root.columnconfigure(index=1)
+    root.columnconfigure(index=2)
+    root.columnconfigure(index=3)
+    root.columnconfigure(index=4)
+    root.rowconfigure(index=1)
+
+    letter_size = 192
+    char_row_num = 1
+    sub_row = 1
+
+    interface.do_inputs('Reload Exam', 0, 0, 'W', 0, refresh)
+    interface.do_labels('Change Size Font', 2, 0, 'WE')
+    interface.do_inputs('-', 2, 0, 'W', 120, None)
+    interface.do_inputs('+', 2, 0, 'E', 120, None)
+    interface.do_dropdown('Select Font', 4, 0, 'E', 0)
+    interface.do_graphics()
+    interface.do_chart_grid()
+
+
+    root.mainloop()
+
+
 interface.do_inputs('Reload Exam', 0, 0, 'W', 0, refresh)
 interface.do_labels('Change Size Font', 2, 0, 'WE')
 interface.do_inputs('-', 2, 0, 'W', 120, None)
@@ -176,5 +203,6 @@ interface.do_inputs('+', 2, 0, 'E', 120, None)
 interface.do_dropdown('Select Font', 4, 0, 'E', 0)
 interface.do_graphics()
 interface.do_chart_grid()
+
 
 root.mainloop()
