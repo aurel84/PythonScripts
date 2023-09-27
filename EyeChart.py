@@ -2,15 +2,29 @@ from tkinter import *
 import random
 import string
 
+
+def refresh():
+    root.update()
+    root.update_idletasks()
+
+
 root = Tk()
-root.geometry('600x1200')
+root.geometry('660x1100')
 root.title('Eye Exam')
-root.configure(background='White')
+menubar = Menu(root)
+choices = Menubutton(menubar)
+root.configure(background='White', menu=menubar)
+
+root.columnconfigure(index=0)
+root.columnconfigure(index=1)
+root.columnconfigure(index=2)
+root.columnconfigure(index=3)
+root.columnconfigure(index=4)
+root.rowconfigure(index=1)
 
 letter_size = 192
 char_row_num = 1
 sub_row = 1
-padding = 2
 
 
 class char:
@@ -46,8 +60,8 @@ class char:
         for i in range(45):
             char_list.append(char.do_rand_letter('Upper'))
 
-        def add_spaces(str1, x):
-            return int(x)*" "+str1+int(x)*" "
+        def add_spaces(arg, x):
+            return int(x)*" "+arg+int(x)*" "
 
         char_list[0:1] = [str(add_spaces(x, .1)) for x in char_list[0:1]]
         char_list[1:3] = [str(add_spaces(x, .3)) for x in char_list[1:3]]
@@ -81,13 +95,44 @@ class char:
 
 class interface:
 
+    def __init__(self):
+
+        return
+
+    def do_inputs(button_text, column_input, row_input, sticky_input, padx_input, command_input):
+
+        button = Button(root, text=button_text, foreground='Black', background='White', command=command_input, border=None)
+        button.grid(column=column_input, row=row_input, sticky=sticky_input, padx=padx_input)
+
+        return
+
+    def do_dropdown(dropdown_text, column_input, row_input, sticky_input, padx_input):
+
+        dropdown = Menubutton(root, text=dropdown_text, background='White', activebackground='Blue', relief='raised')
+        dropdown.menu = Menu(dropdown)  
+        dropdown["menu"]= dropdown.menu  
+
+        dropdown.menu.add_checkbutton(label='Caligri', background='White')
+        dropdown.menu.add_checkbutton(label='Times New Roman', background='White')
+
+        dropdown.grid(column=column_input, row=row_input, sticky=sticky_input, padx=padx_input)
+
+        return
+
+    def do_labels(font_text, column_input, row_input, sticky_input):
+
+        pick_font = Label(root, text=font_text, foreground='Black', background='white')
+        pick_font.grid(column=column_input, row=row_input, sticky=sticky_input)
+
+        return
+
     def do_graphics():
 
         green_line = Canvas(root, background='Green', height=5)
-        green_line.grid(row=5, column=2)
+        green_line.grid(column=2, row=5)
 
         red_line = Canvas(root, background='Red', height=5)
-        red_line.grid(row=9, column=2)
+        red_line.grid(column=2, row=9)
 
     def do_chart_grid():
         global chart_grid
@@ -103,11 +148,11 @@ class interface:
 
             if char_row_num < 10:
 
-                chart_number = Label(root, text=char_row_num, font='Calibri 30', foreground='Black', background='White')
-                chart_number.grid(column=0, row=sub_row, pady=15)
+                chart_number = Label(root, text=char_row_num, font='Calibri 20', foreground='Black', background='White')
+                chart_number.grid(column=0, row=sub_row)
 
             chart_grid = Label(root, text=indice, font='Calibri '+str(letter_size), foreground='Black', background='White')
-            chart_grid.grid(column=2, row=sub_row)
+            chart_grid.grid(column=2, row=sub_row, pady=5)
 
             char_row_num += 1
             sub_row += 1
@@ -121,8 +166,14 @@ class interface:
             letter_size = int(letter_size)//1.5
             letter_size = int(letter_size)
 
-        return chart_grid, sub_row, letter_size, gen_row, padding, char_row_num
+        return chart_grid, sub_row, letter_size, gen_row, char_row_num
 
+
+interface.do_inputs('Reload Exam', 0, 0, 'W', 0, refresh)
+interface.do_labels('Change Size Font', 2, 0, 'WE')
+interface.do_inputs('-', 2, 0, 'W', 120, None)
+interface.do_inputs('+', 2, 0, 'E', 120, None)
+interface.do_dropdown('Select Font', 4, 0, 'E', 0)
 interface.do_graphics()
 interface.do_chart_grid()
 
