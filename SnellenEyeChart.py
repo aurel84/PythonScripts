@@ -1,4 +1,12 @@
 #!/usr/bin/env python3
+
+'''
+Generates a eye chart (snellen-type).  The snellen chart has has inputs for changing size, types of characters, or regenerating new characters.  
+Created on Python 3.10.12, and for newer versions, should work if you change root.siszable to true/true.
+
+By John Hawkins | johnhawkins3d@mail.com
+'''
+
 import tkinter as tk
 import random
 import string
