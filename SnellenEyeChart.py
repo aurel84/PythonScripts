@@ -153,7 +153,7 @@ def do_snellen_chart():
         root.rowconfigure(i, weight=0)
 
     font_type_list = ['Courier', 'FreeSerif', 'Gothic', 'Purisa', 'Waree']
-    font_case_list = ['Uppercase', 'Lowercase', 'Mixed-case', 'Uppper + Letters', 'Lower + Letters', 'Mixed + Letters', 'Letters']
+    font_case_list = ['Uppercase', 'Lowercase', 'Mixed-case', 'Upper + Letters', 'Lower + Letters', 'Mixed + Letters', 'Letters']
     font_size_list = []
     grid_list = [] 
 
