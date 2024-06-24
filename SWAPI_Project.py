@@ -17,7 +17,7 @@ import requests
 main_url = "https://swapi.dev/api/"
 topics_list = []  # what's used to store the tpics in swapi.dev/api/*
 subjects_list = []
-tries = 30
+tries = 30 # im using this to parse number of 404s in SWAPIs json 
 count = 1
 index = 1
 
@@ -76,12 +76,11 @@ if __name__ == "__main__":
     picked_topic = pick_selection(pick_topic, topics_list)
     get_topic = topics_list[(int(pick_topic) - 1)]
 
-    count = 1
-
     # I added this part in, because SWAPIs dictionaries iterate through numbers for each topic or subjects,
     # but ran into an issue where some numbers are blank and return 404, while the following are good.
     # So I had the python script give a max try amounts as it iterates through the list.  If a certain amount of
     # 404 requests are reached then it will stop printing out results.
+    
     while tries != 0:
 
         test = topics_list[picked_topic - 1] + str(count) + "/"
@@ -107,8 +106,10 @@ if __name__ == "__main__":
 
     # I wante to parse the data cleanly and only get the names or titles returned instead of the
     # whole json or dict file, which is not very user-readable in console.  # SWAPI only seems to
-    # have either a 'name' or 'title' for most of the subjects in the topics covered.
-    index = 1
+    # have either a 'name' or 'title' for most of the subjects in the topics covered.\
+    
+    index = 1 # resetting the index back to 1 here for subjects
+    
     for x in subjects_list:
         with urllib.request.urlopen(x) as url:
             data = json.load(url)
