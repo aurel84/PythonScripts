@@ -7,16 +7,14 @@ in Print Statements.  Interaction is done through Inputs.
 Requirements: Python 3.12.3 (or greater)
 By John Hawkins | johnhawkins3d@gmail.com | linkedin.com/in/johnhawkins3d 
 """
-# note: change script name to main.py before running it
 
-import urllib.error
-import urllib.request, json
-import requests
+
+import urllib.error, urllib.request, json
 
 
 MAIN_URL = "https://swapi.dev/api/"
 topics_list = []  # what's used to store the tpics in swapi.dev/api/*
-subjects_list = [] # what's printed after selecting a topic
+subjects_list = []  # what's printed after selecting a topic
 count = 1
 index = 1
 valid = 1
@@ -56,14 +54,14 @@ def pick_selection(selection: int, url_list: str):
 
     return selection
 
-if __name__ == "__main__": # note: change script name to main.py before running it
+
+if __name__ == "__main__":
     # Requesting the url info from SWAPI, which contains the topics, and appending them
     # to a list to print them out to the print console.
     site_topics = get_url_info(MAIN_URL)
 
     for x, y in site_topics.items():
         topics_list.append(y)
-
 
     print("Welcome to SWAPI, please pick from the following topics:")
     for x in topics_list:
@@ -92,24 +90,21 @@ if __name__ == "__main__": # note: change script name to main.py before running 
         + " entries!  Now select from the following subjects: "
     )
 
-
     # Once selection is made, iterates through the json list.  Since some entries return 200, or 404, only counts twoard
     # The total valid entries (i.e. return 200) up to the official count from get_count, and ignores the 404 ones.
     while valid < get_count["count"] + 1:
 
-        test = topics_list[picked_topic - 1] + str(count) + "/"
-        r = requests.head(test)
+        test_url = topics_list[picked_topic - 1] + str(count) + "/"
 
-        if r.status_code == 200:
-
+        try:
+            get_code = urllib.request.urlopen(test_url)
             subjects_list.append(topics_list[picked_topic - 1] + str(count) + "/")
 
             count += 1
             valid += 1
 
-        else:
+        except urllib.error.URLError:
             count += 1
-
 
     # Parses the data cleanly and only gets the names or titles returned instead of the
     # whole json or dict file, which is not very user-readable in console.
@@ -128,7 +123,6 @@ if __name__ == "__main__": # note: change script name to main.py before running 
     pick_subject = input("Selection: ")
     picked_subject = pick_selection(pick_subject, subjects_list)
     get_subjects = get_url_info(subjects_list[picked_subject - 1])
-
 
     try:
         print("Retrieving Info and Stats for " + get_subjects["name"] + ".")
